@@ -1,0 +1,145 @@
+:root{
+    --color-green: oklch(62.7% 0.194 149.214);
+    --color-right: oklch(62.7% 0.194 149.214);
+    --color-wrong:  oklch(0.53 0.23 27.29);
+    --color-misplaced: oklch(0.74 0.17 82.6);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+body {
+    background-color: #0d0d0d;
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: #e3e3e3;
+    letter-spacing: 0.5px;
+}
+
+.title {
+    padding: 20px 0;
+    font-size: 4.2rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    text-shadow: -4px 0px 0 #064709 , -4px 4px 0 #064709, 0px 4px 0 #064709;
+    gap: 15px;
+}
+
+.title>.wrong{
+    color: var(--color-wrong);
+    text-shadow: -4px 0px 0 #470606 , -4px 4px 0 #470606, 0px 4px 0 #470606;
+
+}
+
+.title>.right{
+    color: var(--color-right);
+    text-shadow: -4px 0px 0 #064709 , -4px 4px 0 #064709, 0px 4px 0 #064709;
+
+
+}
+
+.title>.misplaced{
+    color: var(--color-misplaced);
+    text-shadow: -4px 0px 0 #473406 , -4px 4px 0 #473406, 0px 4px 0 #473406;
+}
+
+
+
+.game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: auto;
+    width: 90%;
+    max-width: 600px;
+    border: 1px solid #444;
+    border-radius: 12px;
+    min-height: 300px;
+    padding: 40px 0;
+    background-color: #111;
+    transition: box-shadow 0.3s ease;
+    user-select: none;
+}
+
+.guess-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.letter-box {
+    --box-dim: 56px;
+    width: var(--box-dim);
+    height: var(--box-dim);
+    margin: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border: 1.5px solid #666;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: all 0.35s ease-in-out;
+    box-shadow: 0 0 10px rgba(137, 193, 88, 0.05);
+    cursor: pointer;
+}
+
+.running>.letter-box{
+    border: 1px solid rgb(255, 255, 255);
+}
+.letter-box.curLetter{
+    border: 2px solid var(--color-green);
+    animation: click 0.1s ease-in-out forwards;
+}
+
+@keyframes click {
+    0%{
+        scale: 1.05;
+    }
+    50%{
+        scale: 0.95;
+    }
+    100%{
+        scale:1;
+    }
+}
+
+.letter-box.wrong{
+    background-color: var(--color-wrong);
+    border: 0;
+
+}
+.letter-box.right{
+    background-color: var(--color-right);
+    border: 0;
+
+}
+.letter-box.misplaced{
+    background-color: var(--color-misplaced);
+    border: 0;
+
+}
+
+.letter-box.finished{
+    animation: flip 0.5s ease-in-out forwards;
+}
+@keyframes flip {
+    50% {
+        transform: rotateY(90deg); 
+    }
+    
+}
+
+
