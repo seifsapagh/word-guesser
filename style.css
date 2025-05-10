@@ -1,8 +1,9 @@
 :root{
-    --color-green: oklch(62.7% 0.194 149.214);
-    --color-right: oklch(62.7% 0.194 149.214);
-    --color-wrong:  oklch(0.53 0.23 27.29);
-    --color-misplaced: oklch(0.74 0.17 82.6);
+    /* RGB for older systems */
+    --color-green: rgb(17, 189, 104);
+    --color-right: rgb(17, 189, 104);
+    --color-wrong: rgb(46, 28, 26);
+    --color-misplaced: rgb(181, 177, 57);
 }
 
 * {
@@ -51,8 +52,34 @@ body {
 }
 
 
-
+.message{
+    position: absolute;
+    background-color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: black;
+    top: 15%;
+    font-size: 1.5rem;
+    transition: all 0.4s ease-in-out;
+    animation: pop 0.7s ease-in-out forwards;
+}
+@keyframes pop {
+    0%{
+        scale: 0.8;
+    }
+    50%{
+        scale: 1.2;
+    }
+    100%{
+        scale: 1;
+    }
+}
+.message.hidden{
+    display: none;
+}
+ 
 .game {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
