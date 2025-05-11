@@ -1,30 +1,84 @@
 const MAX_ROWS = 4;
 const MAX_LETTERS = 4;
 
-// TODO: Use A Dictionary Api to fetch Actual Dictionary Words
-const DICTIONARY = [
-    "apple", "beach", "brain", "bread", "break", "brick", "chair", "chest", 
-    "chord", "click", "clock", "cloud", "crane", "dance", "diary", "drink", 
-    "earth", "flame", "fleet", "fruit", "ghost", "grape", "grass", "happy", 
-    "heart", "house", "juice", "light", "money", "music", "party", "piano", 
-    "plant", "radio", "river", "salad", "sheep", "shirt", "sugar", "sword", 
-    "table", "toast", "tiger", "train", "water", "whale", "wheel", "woman", 
-    "world", "write", "zebra", "angel", "badge", "cable", "daisy", "eagle", 
-    "fairy", "giant", "honey", "igloo", "jelly", "koala", "lemon", "mango", 
-    "noble", "olive", "pearl", "queen", "raven", "saint", "tulip", "umbra", 
-    "vivid", "wheat", "yacht", "zesty", "amber", "bliss", "crisp", "dizzy", 
-    "ember", "fluff", "glide", "hover", "inbox", "jumpy", "kinky", "lucky", 
-    "mirth", "nifty", "optic", "pluck", "quirk", "rover", "sunny", "twist", 
-    "ultra", "vixen", "wacky", "yummy", "zippy"
-  ];
+// setting up the game
+let game_on = false;
+
+let WORD = "";
+let current_row = 0;
+let current_letter = -1;
+let guess_rows = document.querySelectorAll(".guess-row");
+let row = guess_rows[current_row];
+row.classList.add("running");
+let letters = row.querySelectorAll("*");
 
 
-// Pick a random word form our dictionary
-const WORD = DICTIONARY[
-    Math.floor(
-        Math.random() * DICTIONARY.length
-    )
-];
+function ResetGame(){
+    game_on= false;
+
+    WORD = "";
+    current_row = 0;
+    current_letter = -1;
+    guess_rows = document.querySelectorAll(".guess-row");
+    row = guess_rows[current_row];
+    row.classList.add("running");
+    letters = row.querySelectorAll("*");
+    
+
+    // Reset Rows And Letters Styles
+    guess_rows.forEach(row => {
+        row.classList.remove("running", "finished");
+        row.querySelectorAll(".letter-box").forEach(letter=>{
+            letter.textContent ="";
+            letter.className = "letter-box";
+        });
+    });
+}
+
+function initGame(){
+    // Reset
+    ResetGame();
+    // load dictionary
+    let dict = loadDictionary()
+    // pick a random word
+    WORD=  pickRandomWord(dict);
+    game_on = true;
+    
+}
+
+
+function loadDictionary(){
+   return [
+        "apple", "beach", "brain", "bread", "break", "brick", "chair", "chest", 
+        "chord", "click", "clock", "cloud", "crane", "dance", "diary", "drink", 
+        "earth", "flame", "fleet", "fruit", "ghost", "grape", "grass", "happy", 
+        "heart", "house", "juice", "light", "money", "music", "party", "piano", 
+        "plant", "radio", "river", "salad", "sheep", "shirt", "sugar", "sword", 
+        "table", "toast", "tiger", "train", "water", "whale", "wheel", "woman", 
+        "world", "write", "zebra", "angel", "badge", "cable", "daisy", "eagle", 
+        "fairy", "giant", "honey", "igloo", "jelly", "koala", "lemon", "mango", 
+        "noble", "olive", "pearl", "queen", "raven", "saint", "tulip", "umbra", 
+        "vivid", "wheat", "yacht", "zesty", "amber", "bliss", "crisp", "dizzy", 
+        "ember", "fluff", "glide", "hover", "inbox", "jumpy", "kinky", "lucky", 
+        "mirth", "nifty", "optic", "pluck", "quirk", "rover", "sunny", "twist", 
+        "ultra", "vixen", "wacky", "yummy", "zippy"
+    ];
+
+}
+
+function pickRandomWord(DICTIONARY){
+    return DICTIONARY[
+        Math.floor(
+            Math.random() * DICTIONARY.length
+        )
+]
+}
+
+
+
+
+
+
 
 // users can only enter English Letters or delete or Submit their guess
 const ALLOWED_INPUT = {
@@ -38,15 +92,7 @@ const ALLOWED_INPUT = {
     "Enter": "Enter"
 };
 
-// just setting up the game
-let current_row = 0;
-let current_letter = -1;
 
-let guess_rows = document.querySelectorAll(".guess-row");
-
-let row = guess_rows[current_row];
-row.classList.add("running");
-let letters = row.querySelectorAll("*");
 
 // highlight current letter box
 function styleLetters(letters, curLetter){
@@ -55,7 +101,7 @@ function styleLetters(letters, curLetter){
             letter.classList.remove("curLetter");
         }
     });
-    
+
     if(current_letter >= 0)
         curLetter.classList.add("curLetter");
 }
@@ -87,18 +133,14 @@ function checkResults(letters){
 document.addEventListener("keyup", e=>{
     
     
-    if(
-        !Object.hasOwn(ALLOWED_INPUT,e.key) ||
-        current_row > MAX_ROWS 
-    ){
-        return; 
-    }
+    if(!game_on || !Object.hasOwn( ALLOWED_INPUT,e.key ) ) return; 
+    
 
     if( current_letter == MAX_LETTERS && e.key == "Enter"){
         let win = checkResults(letters);
         
         if(win){
-            current_row = MAX_ROWS;
+            game_on = false;
             return
         }
 
@@ -113,7 +155,8 @@ document.addEventListener("keyup", e=>{
             return
 
         }else{
-            current_row ++;
+            game_on = false;
+            console.log(WORD);
             setTimeout(()=>{alert(`the word was ${WORD}!`);}, 500); // show result after the 0.5 seconds it takes for flip animation to end.
         }
     }
@@ -136,3 +179,7 @@ document.addEventListener("keyup", e=>{
     styleLetters(letters, letters[current_letter]);
 
 });
+
+// Start The Game
+initGame();
+    
