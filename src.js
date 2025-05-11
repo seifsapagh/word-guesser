@@ -1,9 +1,9 @@
 const MAX_ROWS = 4;
 const MAX_LETTERS = 4;
 
-// setting up the game
+// Game State
+let word_length;
 let game_on = false;
-
 let WORD = "";
 let current_row = 0;
 let current_letter = -1;
@@ -12,20 +12,13 @@ let row = guess_rows[current_row];
 row.classList.add("running");
 let letters = row.querySelectorAll("*");
 
+// Data
+let word_list ;
+let dict;
+
 
 function ResetGame(){
-    game_on= false;
-
-    WORD = "";
-    current_row = 0;
-    current_letter = -1;
-    guess_rows = document.querySelectorAll(".guess-row");
-    row = guess_rows[current_row];
-    row.classList.add("running");
-    letters = row.querySelectorAll("*");
-    
-
-    // Reset Rows And Letters Styles
+    // Reset UI
     guess_rows.forEach(row => {
         row.classList.remove("running", "finished");
         row.querySelectorAll(".letter-box").forEach(letter=>{
@@ -33,37 +26,45 @@ function ResetGame(){
             letter.className = "letter-box";
         });
     });
+
+    // Reset game state
+    current_row = 0;
+    current_letter = -1;
+    
+    // Setup first row
+    guess_rows = document.querySelectorAll(".guess-row");
+    row = guess_rows[current_row];
+    row.classList.add("running");
+    letters = row.querySelectorAll("*");
+    
+    WORD=  pickRandomWord(dict);
+    game_on= true;
+
 }
 
-function initGame(){
+async function initGame(){
+    // load dictionary
+    dict = await loadDictionary();
+    word_list = await loadWordList();
+    
     // Reset
     ResetGame();
-    // load dictionary
-    let dict = loadDictionary()
-    // pick a random word
-    WORD=  pickRandomWord(dict);
-    game_on = true;
-    
+    if (WORD)
+        game_on = true;
 }
 
 
-function loadDictionary(){
-   return [
-        "apple", "beach", "brain", "bread", "break", "brick", "chair", "chest", 
-        "chord", "click", "clock", "cloud", "crane", "dance", "diary", "drink", 
-        "earth", "flame", "fleet", "fruit", "ghost", "grape", "grass", "happy", 
-        "heart", "house", "juice", "light", "money", "music", "party", "piano", 
-        "plant", "radio", "river", "salad", "sheep", "shirt", "sugar", "sword", 
-        "table", "toast", "tiger", "train", "water", "whale", "wheel", "woman", 
-        "world", "write", "zebra", "angel", "badge", "cable", "daisy", "eagle", 
-        "fairy", "giant", "honey", "igloo", "jelly", "koala", "lemon", "mango", 
-        "noble", "olive", "pearl", "queen", "raven", "saint", "tulip", "umbra", 
-        "vivid", "wheat", "yacht", "zesty", "amber", "bliss", "crisp", "dizzy", 
-        "ember", "fluff", "glide", "hover", "inbox", "jumpy", "kinky", "lucky", 
-        "mirth", "nifty", "optic", "pluck", "quirk", "rover", "sunny", "twist", 
-        "ultra", "vixen", "wacky", "yummy", "zippy"
-    ];
+// Data Loading
+async function loadDictionary(word_length = 5) {
+    const response = await fetch("./Data/lengths_words.json");
+    const dictionaryObj = await response.json();
+    return dictionaryObj[word_length];
+}
 
+async function loadWordList(){
+    const response = await fetch("./Data/words.json");
+    const wordListObj  = await response.json();
+    return wordListObj;
 }
 
 function pickRandomWord(DICTIONARY){
@@ -73,11 +74,6 @@ function pickRandomWord(DICTIONARY){
         )
 ]
 }
-
-
-
-
-
 
 
 // users can only enter English Letters or delete or Submit their guess
@@ -106,13 +102,49 @@ function styleLetters(letters, curLetter){
         curLetter.classList.add("curLetter");
 }
 
+
+function triggerShakeAnimation(row){
+    row.classList.add("shake");
+    setTimeout(()=>{
+        row.classList.remove("shake");
+    }, 500);
+}
+
+function showMessage(msg, duration=1.2){
+    let message_box = document.querySelector(".game>.message");
+    message_box.classList.remove("hidden");
+    message_box.textContent = msg;
+    setTimeout(()=>{
+        message_box.classList.add("hidden");
+    }, duration*1000);
+}
+
+
+
+
+
+// check if word exists in word list
+function checkExistance(letters){
+    let user_input = "";
+    letters.forEach(letter=>{
+        user_input += letter.textContent;
+    });
+    if(!word_list[user_input]){
+        return false;
+    }
+
+    return true;
+}
+
+
+
 // Test User input against our chosen word and highlight each letter accordingly.
 function checkResults(letters){
     let i= 0;
     let result = true;
+
     letters.forEach(letter=>{
         letter.classList.add("finished");
-
         if(letter.textContent == WORD[i]){
             letter.classList.add("right");
         }else if (letter.textContent != WORD[i] &&  WORD.includes( letter.textContent)  ){
@@ -128,22 +160,28 @@ function checkResults(letters){
     return result;
 }
 
-// console.log(WORD);
 
 document.addEventListener("keyup", e=>{
+
+    let key = (e.key.length == 1) ? e.key.toLowerCase() : e.key;
     
     
-    if(!game_on || !Object.hasOwn( ALLOWED_INPUT,e.key ) ) return; 
+    if(!game_on || !Object.hasOwn( ALLOWED_INPUT,key ) ) return; 
     
 
-    if( current_letter == MAX_LETTERS && e.key == "Enter"){
-        let win = checkResults(letters);
+    if( current_letter == MAX_LETTERS && key == "Enter"){
         
+        if (!checkExistance(letters)){
+            triggerShakeAnimation(guess_rows[current_row]);
+            showMessage("Not in word list");
+            return;
+        }
+
+        let win = checkResults(letters);
         if(win){
             game_on = false;
             return
         }
-
         // Resetting / Updating for new Guess try if maximum guesses not reached
         if (current_row < MAX_ROWS){
 
@@ -156,20 +194,19 @@ document.addEventListener("keyup", e=>{
 
         }else{
             game_on = false;
-            console.log(WORD);
             setTimeout(()=>{alert(`the word was ${WORD}!`);}, 500); // show result after the 0.5 seconds it takes for flip animation to end.
         }
     }
 
     // Adding user input unless it's a backspace or enter
-    if(e.key != "Backspace" && e.key != "Enter"){
+    if(key != "Backspace" && key != "Enter"){
         if(current_letter < MAX_LETTERS){
-            letters[++current_letter].innerHTML = e.key;
+            letters[++current_letter].innerHTML = key;
         }
     }
 
 
-    if(e.key == "Backspace"){
+    if(key == "Backspace"){
         if(current_letter >= 0){
             letters[current_letter].innerHTML = "";
             current_letter --;
@@ -180,6 +217,6 @@ document.addEventListener("keyup", e=>{
 
 });
 
-// Start The Game
-initGame();
+// Start the Game when page Loads
+window.addEventListener('DOMContentLoaded', initGame);
     
