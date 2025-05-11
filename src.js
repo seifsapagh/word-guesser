@@ -55,7 +55,9 @@ function styleLetters(letters, curLetter){
             letter.classList.remove("curLetter");
         }
     });
-    curLetter.classList.add("curLetter");
+    
+    if(current_letter >= 0)
+        curLetter.classList.add("curLetter");
 }
 
 // Test User input against our chosen word and highlight each letter accordingly.
@@ -111,7 +113,7 @@ document.addEventListener("keyup", e=>{
             return
 
         }else{
-            console.log(current_row);
+            current_row ++;
             setTimeout(()=>{alert(`the word was ${WORD}!`);}, 500); // show result after the 0.5 seconds it takes for flip animation to end.
         }
     }
@@ -125,8 +127,8 @@ document.addEventListener("keyup", e=>{
 
 
     if(e.key == "Backspace"){
-        letters[current_letter].innerHTML = "";
         if(current_letter >= 0){
+            letters[current_letter].innerHTML = "";
             current_letter --;
         }
     }
