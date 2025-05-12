@@ -46,7 +46,7 @@ async function initGame(){
     // load dictionary
     dict = await loadDictionary();
     word_list = await loadWordList();
-    
+    addVirtualKeyboard();
     // Reset
     ResetGame();
     if (WORD)
@@ -123,6 +123,7 @@ function showMessage(msg, duration=1.2){
 
 
 
+
 // check if word exists in word list
 function checkExistance(letters){
     let user_input = "";
@@ -156,7 +157,6 @@ function checkResults(letters){
         }
         i++;
     });
-
     return result;
 }
 
@@ -170,18 +170,21 @@ document.addEventListener("keyup", e=>{
     
 
     if( current_letter == MAX_LETTERS && key == "Enter"){
-        
+
+        // check if word exists in word list
         if (!checkExistance(letters)){
             triggerShakeAnimation(guess_rows[current_row]);
             showMessage("Not in word list");
             return;
         }
 
+        // if user entered the correct word, win
         let win = checkResults(letters);
         if(win){
             game_on = false;
             return
         }
+
         // Resetting / Updating for new Guess try if maximum guesses not reached
         if (current_row < MAX_ROWS){
 
@@ -216,6 +219,43 @@ document.addEventListener("keyup", e=>{
     styleLetters(letters, letters[current_letter]);
 
 });
+
+// new game button
+let restart_game_btn = document.querySelector(".new-game-btn");
+restart_game_btn.addEventListener("click", e=>{
+    ResetGame();
+});
+
+
+
+function addVirtualKeyboard(){
+    let keyboard_box = document.querySelector(".keyboard");
+    let keyboard_layout = [ "qwertyuiop" , "asdfghjkl" , " zxcvbnm "];
+    let passed = false
+    keyboard_layout.forEach(row=>{
+        let row_div = document.createElement("div");
+        row_div.classList.add("keyboard-row");
+        Array.from(row).forEach(key=>{
+            let key_div = document.createElement("div");
+            key_div.classList.add("key");
+            key_div.textContent = key;
+            if(key==" "){
+                key_div.textContent =(passed)? "Enter": "Del";
+                passed = true;
+            }
+            row_div.appendChild(key_div);
+        });
+        keyboard_box.appendChild(row_div);
+    });
+    
+    
+    
+}
+
+
+
+
+
 
 // Start the Game when page Loads
 window.addEventListener('DOMContentLoaded', initGame);

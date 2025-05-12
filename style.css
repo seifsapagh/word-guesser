@@ -7,6 +7,7 @@
     --color-right: rgb(0 166 62);
     --color-wrong: rgb(208 0 2);
     --color-misplaced: rgb(223 158 0);
+    --vgap: 10px;
 }
 
 * {
@@ -25,37 +26,58 @@ body {
     font-family: "Open Sans" ; 
 }
 
+.title-bar{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr ;
+    align-items: center;
+    justify-items: center;
+    width: 600px;
+    margin: auto;
+    user-select: none;
+
+}
+
+.new-game-btn,.info{
+    cursor: pointer;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+}
+
 .title {
+    grid-column:2;
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: fit-content;
+    padding: var(--vgap) 0;
     font-family: 'Consolas', 'Courier New', monospace ;
-    padding: 20px 0;
     font-weight: 600;
     font-size: 4.2rem;
     color: #ffffff;
     text-transform: uppercase;
-    display: flex;
-    justify-content: center;
     text-shadow: -4px 0px 0 #064709 , -4px 4px 0 #064709, 0px 4px 0 #064709;
-    gap: 15px;
-    
 }
 
 .title>.wrong{
     color: var(--color-wrong);
     text-shadow: -4px 0px 0 #470606 , -4px 4px 0 #470606, 0px 4px 0 #470606;
-
 }
 
 .title>.right{
     color: var(--color-right);
     text-shadow: -4px 0px 0 #064709 , -4px 4px 0 #064709, 0px 4px 0 #064709;
-
-
 }
 
 .title>.misplaced{
     color: var(--color-misplaced);
     text-shadow: -4px 0px 0 #473406 , -4px 4px 0 #473406, 0px 4px 0 #473406;
 }
+
+
+
+
+
 
 
 .message{
@@ -73,10 +95,15 @@ body {
 }
 
 
+/* section{
+    border-top: 1px solid lime;
+    border-bottom: 1px solid lime;
+} */
+
 .message.hidden{
     visibility: hidden;
     opacity: 0;
-        visibility 0s 1s, /* stays hidden after animation */
+        visibility: 0s 1s, /* stays hidden after animation */
         opacity 0.3s ease-in-out;  
     transform: translateY(-20px);
 }
@@ -86,31 +113,29 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-
     margin: auto;
-    width: 90%;
-    max-width: 600px;
-    border: 1px solid #444;
-    border-radius: 12px;
-    min-height: 300px;
-    padding: 40px 0;
-    background-color: #111;
     transition: box-shadow 0.3s ease;
     user-select: none;
+    padding: var(--vgap) 0;
+    
+    /* border-top: 1px solid #444;
+    border-bottom: 1px solid #444;
+    background-color: #111;
+    */
 }
 
 .guess-row {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
+    margin: 5px 0;
     width: fit-content;
 }
 
-.letter-box {
-    --box-dim: 56px;
+.letter-box,.key {
+    --box-dim: 50px;
     width: var(--box-dim);
     height: var(--box-dim);
-    margin: 0 4px;
+    margin: 5px 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,9 +146,11 @@ body {
     border: 1.5px solid #666;
     border-radius: 4px;
     text-transform: uppercase;
+    cursor: pointer;
+}
+.letter-box{
     transition: all 0.35s ease-in-out;
     box-shadow: 0 0 10px rgba(137, 193, 88, 0.05);
-    cursor: pointer;
 }
 
 .running>.letter-box{
@@ -187,4 +214,33 @@ body {
   20%, 40%, 60%, 80% {
     transform: translateX(4px);
   }
+}
+
+
+
+
+.keyboard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+}
+.keyboard-row{
+    display: flex;
+    justify-content: center;
+}
+.keyboard-row>.key{
+    margin: 5px;
+}
+/* .keyboard-row:first-child{
+    width: 660px;
+}
+.keyboard-row:first-child>.key{
+    flex: 1;
+} */
+
+
+.keyboard> :last-child> :last-child,.keyboard> :last-child> :first-child{
+    font-size: 1.2rem;
+    padding: 0 40px ;
 }
