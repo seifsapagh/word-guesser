@@ -1,6 +1,6 @@
 const MAX_ROWS = 4;
 const MAX_LETTERS = 4;
-
+let testing = false;
 // Game State
 let word_length;
 let game_on = false;
@@ -40,6 +40,13 @@ function ResetGame(){
     WORD=  pickRandomWord(dict);
     game_on= true;
 
+    let keyboard = document.querySelectorAll(".key");
+    if(keyboard){
+        keyboard.forEach(key=>{
+            key.classList.remove("right","wrong","misplaced");
+        });
+    }
+
 }
 
 async function initGame(){
@@ -51,6 +58,7 @@ async function initGame(){
     ResetGame();
     if (WORD)
         game_on = true;
+    console.log(WORD);
 }
 
 
@@ -122,14 +130,14 @@ function showMessage(msg, duration=1.2){
 
 
 
-
-
 // check if word exists in word list
 function checkExistance(letters){
     let user_input = "";
+    
     letters.forEach(letter=>{
         user_input += letter.textContent;
     });
+
     if(!word_list[user_input]){
         return false;
     }
@@ -138,24 +146,42 @@ function checkExistance(letters){
 }
 
 
-
 // Test User input against our chosen word and highlight each letter accordingly.
 function checkResults(letters){
     let i= 0;
     let result = true;
-
+    
     letters.forEach(letter=>{
+        
+        let virtual_key = document.querySelector(`.key.${letter.textContent}`);
+
+        virtual_key.classList.add("animate");
         letter.classList.add("finished");
-        if(letter.textContent == WORD[i]){
+
+        virtual_key.classList.remove("misplaced");
+
+        if(letter.textContent == WORD[i])
+        {
             letter.classList.add("right");
-        }else if (letter.textContent != WORD[i] &&  WORD.includes( letter.textContent)  ){
+            virtual_key.classList.add("right");
+        }
+        else if (letter.textContent != WORD[i] &&  WORD.includes( letter.textContent)  )
+        {
             letter.classList.add("misplaced");
+            if(!virtual_key.classList.contains("right")){
+                virtual_key.classList.add("misplaced");
+            }
             result = false;
-        }else{
+        }
+        else
+        {
             letter.classList.add("wrong");
+            virtual_key.classList.add("wrong");
             result= false;
         }
+
         i++;
+        setTimeout(e=>{virtual_key.classList.remove("animate")},500);
     });
     return result;
 }
@@ -172,10 +198,12 @@ document.addEventListener("keyup", e=>{
     if( current_letter == MAX_LETTERS && key == "Enter"){
 
         // check if word exists in word list
-        if (!checkExistance(letters)){
-            triggerShakeAnimation(guess_rows[current_row]);
-            showMessage("Not in word list");
-            return;
+        if(!testing){
+            if (!checkExistance(letters)){
+                triggerShakeAnimation(guess_rows[current_row]);
+                showMessage("Not in word list");
+                return;
+            }
         }
 
         // if user entered the correct word, win
@@ -237,8 +265,6 @@ function addVirtualKeyboard(){
         ["del",..."zxcvbnm","enter"]
     ];
     
-    let passed = false
-
     keyboard_layout.forEach(row=>{
 
         let row_div = document.createElement("div");
@@ -246,12 +272,8 @@ function addVirtualKeyboard(){
 
         row.forEach(key=>{
             let key_div = document.createElement("div");
-            key_div.classList.add("key");
+            key_div.classList.add("key",key);
             key_div.textContent = key;
-            if(key==" "){
-                key_div.textContent =(passed)? "Enter": "Del";
-                passed = true;
-            }
             row_div.appendChild(key_div);
         });
 
@@ -260,6 +282,7 @@ function addVirtualKeyboard(){
 
     addKeyboardFunctionality();
 }
+
 function addKeyboardFunctionality(){
     let keys = document.querySelectorAll(".key");
     keys.forEach(key=>{
@@ -287,7 +310,6 @@ function addKeyboardFunctionality(){
                 which  : key_code,
                 bubbles: true
             });
-
             document.dispatchEvent(keyEvent);
         });
     });
