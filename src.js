@@ -58,7 +58,6 @@ async function initGame(){
     ResetGame();
     if (WORD)
         game_on = true;
-    console.log(WORD);
 }
 
 
@@ -274,7 +273,8 @@ function addVirtualKeyboard(){
             let key_div = document.createElement("div");
             key_div.classList.add("key",key);
             key_div.textContent = key;
-            row_div.appendChild(key_div);
+            row_div.
+            appendChild(key_div);
         });
 
         keyboard_box.appendChild(row_div);
