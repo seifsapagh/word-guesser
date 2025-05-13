@@ -1,0 +1,42 @@
+@keyframes keyClick {
+    0%{
+        scale: 1.2;
+    }
+    50%{
+        scale: 1;
+    }
+    100%{
+        scale: 0.8;
+    }
+}
+
+@keyframes flip {
+    50% {
+        transform: rotateY(90deg); 
+    }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+
+@keyframes click {
+    0%{
+        scale: 1.05;
+    }
+    50%{
+        scale: 0.95;
+    }
+    100%{
+        scale:1;
+    }
+}
