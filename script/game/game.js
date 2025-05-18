@@ -31,7 +31,6 @@ export function ResetGame(){
     }
 
     if (state.word){
-        console.log(state.word);
         state.game_on = true;
     }
 
