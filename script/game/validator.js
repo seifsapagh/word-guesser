@@ -33,7 +33,6 @@ export function checkResults(letters){
         
         let virtual_key = document.querySelector(`.key.${letter.textContent}`);
 
-        // virtual_key.classList.remove("wrong", "right", "misplaced"); // remove redundant classes
 
         virtual_key.classList.add("animate");
         letter.classList.add("finished");
@@ -45,6 +44,11 @@ export function checkResults(letters){
 
                 virtual_key.classList.remove("misplaced");
                 virtual_key.classList.add("right");
+
+                let position_feedback = virtual_key.querySelector(".position-feedback");
+                if(position_feedback){
+                    position_feedback.textContent = i+1;
+                }
             }
         }
         else if (letter.textContent != state.word[i] &&  state.word.includes( letter.textContent)  )

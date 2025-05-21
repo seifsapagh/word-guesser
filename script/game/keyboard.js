@@ -16,7 +16,16 @@ export function addVirtualKeyboard(){
             let key_div = document.createElement("div");
             key_div.classList.add("key",key);
             key_div.textContent = key;
+
+            if(!["enter","del"].includes(key)){
+                let position = document.createElement("div");
+                position.classList.add("position-feedback");
+                key_div.appendChild(position);
+            }
+
             row_div.appendChild(key_div);
+
+            
         });
 
         keyboard_box.appendChild(row_div);
