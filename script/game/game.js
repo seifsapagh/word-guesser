@@ -11,9 +11,8 @@ export function ResetGame(){
     state.word=  pickRandomWord(state.dict);
     
     // Reset UI
-    let guess_rows = document.querySelectorAll(".guess-row");
-    guess_rows[state.current_row].classList.add("running"); // highlight first guess row
 
+    let guess_rows = document.querySelectorAll(".guess-row");
     guess_rows.forEach(row => {
         row.classList.remove("running", "finished");
         row.querySelectorAll(".letter-box").forEach(letter=>{
@@ -21,13 +20,15 @@ export function ResetGame(){
             letter.className = "letter-box";
         });
     });
+    guess_rows[state.current_row].classList.add("running"); // highlight first guess row
 
     // Reset Keyboard UI
-    let keyboard = document.querySelectorAll(".key");
+    let keyboard = document.querySelectorAll(".virtual-key");
     if(keyboard){
         keyboard.forEach(key=>{
             key.classList.remove("right","wrong","misplaced");
-        });
+        }); 
+        // no need to reset position feedback text since it's hidden unless the letter is correct
     }
 
     if (state.word){

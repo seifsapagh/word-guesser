@@ -13,17 +13,19 @@ export function addVirtualKeyboard(){
         row_div.classList.add("keyboard-row");
 
         row.forEach(key=>{
-            let key_div = document.createElement("div");
-            key_div.classList.add("key",key);
-            key_div.textContent = key;
 
+
+            let virtual_key = document.createElement("div");
+            virtual_key.classList.add("virtual-key");
+            virtual_key.dataset.letter = key
+            virtual_key.textContent = key;
             if(!["enter","del"].includes(key)){
                 let position = document.createElement("div");
                 position.classList.add("position-feedback");
-                key_div.appendChild(position);
+                virtual_key.appendChild(position);
             }
 
-            row_div.appendChild(key_div);
+            row_div.appendChild(virtual_key);
 
             
         });
@@ -35,10 +37,10 @@ export function addVirtualKeyboard(){
 }
 
 export function addKeyboardFunctionality(){
-    let keys = document.querySelectorAll(".key");
+    let keys = document.querySelectorAll(".virtual-key");
     keys.forEach(key=>{
         key.addEventListener("click", e=>{
-            let char = key.textContent.toUpperCase();
+            let char = key.dataset.letter.toUpperCase();
             let key_code = char.charCodeAt(0);
             let code = `Key${char}`;
             

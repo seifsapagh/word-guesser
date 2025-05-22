@@ -31,8 +31,7 @@ export function checkResults(letters){
     
     letters.forEach(letter=>{
         
-        let virtual_key = document.querySelector(`.key.${letter.textContent}`);
-
+        let virtual_key = document.querySelector(`.virtual-key[data-letter="${letter.textContent}"]`);
 
         virtual_key.classList.add("animate");
         letter.classList.add("finished");

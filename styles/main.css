@@ -9,7 +9,7 @@
     --color-right: rgb(0 166 62);
     --color-wrong: rgb(40 40 40);
     --color-misplaced: rgb(223 158 0);
-    
+
     --body-bg : #0d0d0d;
     --vgap: 10px;
 }
@@ -129,7 +129,7 @@ body {
     width: fit-content;
 }
 
-.letter-box,.key {
+.letter-box {
     --box-dim: 50px;
     width: var(--box-dim);
     height: var(--box-dim);
@@ -154,19 +154,27 @@ body {
 .running>.letter-box{
     border: 1px solid rgb(255, 255, 255);
 }
+
 .letter-box.curLetter{
     border: 2px solid var(--color-green);
     animation: click 0.1s ease-in-out forwards;
 }
 
+.letter-box.right{
+    background-color: var(--color-right);
+    border: 0;
+    
+}
+.letter-box.misplaced{
+    background-color: var(--color-misplaced);
+    border: 0;
+}
 
 .letter-box.wrong{
     border: 0;
     background-color: var(--color-red);
 
 }
-
-
 
 .letter-box.finished{
     animation: flip 0.5s ease-in-out forwards;
