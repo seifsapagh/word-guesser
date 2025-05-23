@@ -2,37 +2,60 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 0;
+    padding: 10px;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
 }
+
+
+
 .keyboard-row{
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .keyboard-row>.virtual-key{
     position: relative;
     width: 40px;
     height: 50px;
-    margin: 5px 5px;
+    margin: 5px 2px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: transparent;
     color: #ffffff;
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: bold;
     border: 1.5px solid #666;
     border-radius: 4px;
     text-transform: uppercase;
     cursor: pointer;
-    margin: 5px;
+    flex: 1;
+    user-select: none;
+
+    transition: all 0.2s ease-in-out;
 }
 
 /* Styling Enter and Delete */
 .keyboard> :last-child> :last-child,.keyboard> :last-child> :first-child{
-    font-size: 1.2rem;
-    padding: 0 40px ;
+    font-size: 14px;
+    padding: 0 10px;
+    flex: 1.5;
 }
+
+
+.virtual-key:hover {
+    filter: brightness(5);
+}
+
+
+.virtual-key.active {
+  transform: scale(0.9);
+  filter: blur(0.5px);
+}
+
 
 
 .virtual-key.wrong{
@@ -71,7 +94,7 @@
     top: 0;
     right: 0;
     transform: translate(40%, -40%);
-    
+    color: #fff;
     width: 15px;        
     font-size: 0.5em;
 

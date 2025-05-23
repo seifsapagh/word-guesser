@@ -1,10 +1,12 @@
+import {handleKeyInput} from "./input.js";
+let keyboard_box = document.querySelector(".keyboard");
+
 export function addVirtualKeyboard(){
-    let keyboard_box = document.querySelector(".keyboard");
     let keyboard_layout = 
     [
         [..."qwertyuiop"] ,
         [..."asdfghjkl"] ,
-        ["del",..."zxcvbnm","enter"]
+        ["Backspace",..."zxcvbnm","Enter"]
     ];
     
     keyboard_layout.forEach(row=>{
@@ -14,11 +16,12 @@ export function addVirtualKeyboard(){
 
         row.forEach(key=>{
 
+            let key_content = (key == "Backspace") ? "Del" : key ;
 
             let virtual_key = document.createElement("div");
             virtual_key.classList.add("virtual-key");
             virtual_key.dataset.letter = key
-            virtual_key.textContent = key;
+            virtual_key.textContent = key_content;
             if(!["enter","del"].includes(key)){
                 let position = document.createElement("div");
                 position.classList.add("position-feedback");
@@ -40,29 +43,23 @@ export function addKeyboardFunctionality(){
     let keys = document.querySelectorAll(".virtual-key");
     keys.forEach(key=>{
         key.addEventListener("click", e=>{
-            let char = key.dataset.letter.toUpperCase();
-            let key_code = char.charCodeAt(0);
-            let code = `Key${char}`;
-            
-            if(char == "ENTER"){
-                char = "Enter";
-                code = "Enter";
-                key_code = 13;
-            }
-            if (char == "DEL"){
-                char = "Backspace";
-                code = "Backspace";
-                key_code = 8;
-            }
-            
-            const keyEvent = new KeyboardEvent("keyup",{
-                key    : char,
-                code   : code,
-                keyCode: key_code,
-                which  : key_code,
-                bubbles: true
-            });
-            document.dispatchEvent(keyEvent);
+            let keyboard_key = key.dataset.letter;
+            handleKeyInput({key: keyboard_key});
         });
     });
+}
+
+
+export function pressVirtualKey(keyboard_key){
+
+    let virtual_key = keyboard_box.querySelector(`.virtual-key[data-letter = '${keyboard_key}']`);
+    if(virtual_key){
+        virtual_key.classList.add("active");
+
+        const removeActiveClass = ()=>virtual_key.classList.remove("active");
+        virtual_key.addEventListener("transitionend",removeActiveClass, { once: true });
+        // fallback in case the event listener was triggered multiple times
+        setTimeout(removeActiveClass, 500);
+    }
+
 }

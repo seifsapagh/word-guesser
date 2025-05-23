@@ -6,4 +6,4 @@ document.addEventListener("DOMContentLoaded", e=>{
 });
 
 
-document.addEventListener("keyup", handleKeyInput);
+document.addEventListener("keydown", handleKeyInput);
