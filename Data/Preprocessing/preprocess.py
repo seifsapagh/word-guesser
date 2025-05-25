@@ -1,42 +1,63 @@
+import os
 import json
+from collections import defaultdict
 
-INPUT_FILE = "words_alpha.txt"
-WORDS_JSON_PATH = "../words.json"
-LENGTHS_JSON_PATH = "../lengths_words.json"
-MIN_WORD_LENGTH = 3
+WORD_LENGTH = 5
 
+def jsonify(data: dict, filePath: str )-> None:
+    print(f"JSONifying {filePath:>30}")
+    try:
 
-def jsonify(data: dict, file_path: str )-> None:
-    print(f"Exporting {file_path} ")
-    with open(file_path,"w") as f:
-        json.dump(data, f, indent=4 );
+        directory = os.path.dirname(filePath)
+        # Create directory, skip if file is to be created in current directory
+        if directory:
+            os.makedirs(directory, exist_ok=True)
 
-def start_preprocessing(file_path: str)-> None:
+        with open(filePath,"w") as f:
+            json.dump(data, f, indent=4 )
 
-    with open(file_path, "r") as file:
-        
-        words_by_length = {}
-        words_json = {}
+        print(f"{filePath:<30} JSONified Successfully ")
+
+    except Exception as e:
+        print(f"An error occurred while exporting to {filePath}: {e}")
+
+def start_preprocessing(rawFilePath: str, exportPath, exportLengths: bool = False, as_list: bool = False)-> None:
+    print(f"\tStarted Processing {rawFilePath:>30}")
+
+    directory = os.path.dirname(exportPath)
+    filename = os.path.basename(exportPath)
+
+    with open(rawFilePath, "r") as file:
+
+        words_set = set()
+        if exportLengths:
+            words_by_length = defaultdict(list)
+            stats = defaultdict(int)
+            lengths_export_path = os.path.join(directory, "lengths_" + filename)
         
         for line in file:
             word = line.strip()
             # Add words of lengths larger than 3 
-            if word and len(word) >= MIN_WORD_LENGTH :
-                words_json[word] = 1
-                if len(word) in words_by_length:
+            if word and len(word) == WORD_LENGTH :
+                words_set.add(word)
+                if exportLengths:
                     words_by_length[len(word)].append(word)
-                else:
-                    words_by_length[len(word)] = [word]
+                    stats[len(word)] +=1
 
-        
-        # Print total words and total of each length
-        print(f"A total of {len(words_json)} words have been added")
+    # Print total words and total of each length
+    print(f"A total of {len(words_set)} words have been Extracted from {rawFilePath}")
+    if as_list :
+        jsonify(list(words_set), exportPath)
+    else:
+        words_json = {word:1 for word in words_set}
+        jsonify(words_json, exportPath)
 
-        for length in sorted(words_by_length):
-            print(f"length {length:<2} Added: {len(words_by_length[length]) :>6} ")
+    if exportLengths:
+        # for length in sorted(words_by_length):
+        #     print(f"length {length:<2} Added: {len(words_by_length[length]) :>6} ")
+        # add counts to lengths json
+        words_by_length["counts"] = stats
+        jsonify(words_by_length , lengths_export_path)
+
+    print(f"\t{rawFilePath:<30} Processing End\n")
     
-    jsonify(words_json,WORDS_JSON_PATH)
-    jsonify(words_by_length,LENGTHS_JSON_PATH)
-
-if __name__ == "__main__":
-    start_preprocessing(INPUT_FILE)
