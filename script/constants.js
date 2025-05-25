@@ -1,7 +1,8 @@
 export const MAX_ROWS = 4;
 export const MAX_LETTERS = 4;
 export const DEFAULT_WORD_LENGTH = 5;
-export const DICTOONARY_PATH = "Data/lengths_words.json";
+export const TARGET_WORDS_PATH = "./Data/target_words.json";
+export const ALLOWED_WORDS_PATH = "./Data/words.json";
 
 // users can only enter English Letters or delete or Submit their guess
 export const ALLOWED_INPUT = {
