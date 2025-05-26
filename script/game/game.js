@@ -49,7 +49,11 @@ export async function initGame(){
 
 
 
-let restart_game_btn = document.querySelector(".new-game-btn");
-restart_game_btn.addEventListener("click", e=>{
+let restart_game_btn = document.querySelector(".btn-new-game");
+restart_game_btn.addEventListener("click", ()=>{
+    restart_game_btn.classList.add("rotate");
+    restart_game_btn.addEventListener('animationend', ()=>{
+        restart_game_btn.classList.remove("rotate");
+    })
     ResetGame();
 });

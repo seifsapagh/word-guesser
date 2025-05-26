@@ -12,6 +12,8 @@
 
     --body-bg : #0d0d0d;
     --vgap: 10px;
+    
+    --restart-duaration : 0.35s;
 }
 
 * {
@@ -39,23 +41,39 @@ body {
     max-width: 600px;
     margin: auto;
     user-select: none;
+    padding: var(--vgap) 0 ;
 
 }
 
-.new-game-btn,.info{
+.btn-new-game,.btn-guide{
     cursor: pointer;
     text-transform: uppercase;
     text-wrap: nowrap;
+    overflow: hidden;
 }
+
+.btn-guide> svg, .btn-new-game > svg{
+    height: auto;
+    width: 35px;
+}
+.btn-new-game > svg{
+    transform:scaleX(-1) rotate(350deg);
+    transition: rotate var(--restart-duaration) ease-in-out;
+}
+
+.btn-new-game.rotate{
+    transform:scaleX(-1) rotate(350deg);
+    animation: rotate var(--restart-duaration) forwards;
+}
+
 
 .title {
     grid-column:2;
     justify-self: center;
     display: flex;
     justify-content: center;
-    gap: 5px;
+    gap: 2px;
     width: fit-content;
-    padding: var(--vgap) 0;
     font-family:  "roboto" ;
     font-weight: 600;
     font-size: 3rem;
@@ -89,15 +107,7 @@ body {
     font-size: 1.5rem;
     transition: all 0.5s ease-in-out;
     z-index:99;
-
-
 }
-
-
-/* section{
-    border-top: 1px solid lime;
-    border-bottom: 1px solid lime;
-} */
 
 .message.hidden{
     visibility: hidden;
@@ -106,8 +116,6 @@ body {
         opacity 0.3s ease-in-out;  
     transform: translateY(-20px);
 }
- 
-
 
 .game {
     position: relative;
@@ -115,14 +123,8 @@ body {
     flex-direction: column;
     align-items: center;
     margin: auto;
-    transition: box-shadow 0.3s ease;
     user-select: none;
     padding: var(--vgap) 0;
-    
-    /* border-top: 1px solid #444;
-    border-bottom: 1px solid #444;
-    background-color: #111;
-    */
 }
 
 .guess-row {
@@ -150,17 +152,12 @@ body {
     cursor: pointer;
 }
 .letter-box{
-    transition: all 0.35s ease-in-out;
+    transition: all var(--restart-duaration) ease-in-out;
     box-shadow: 0 0 10px rgba(137, 193, 88, 0.05);
 }
 
 .running>.letter-box{
     border: 1px solid rgb(255, 255, 255);
-}
-
-.letter-box.curLetter{
-    border: 2px solid var(--color-green);
-    animation: click 0.1s ease-in-out forwards;
 }
 
 .letter-box.right{

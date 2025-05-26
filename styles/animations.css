@@ -28,15 +28,11 @@
   }
 }
 
-
-@keyframes click {
-    0%{
-        scale: 1.05;
-    }
-    50%{
-        scale: 0.95;
-    }
-    100%{
-        scale:1;
-    }
+@keyframes rotate {
+   from{
+    transform: rotate(0deg);
+   }
+   to{
+    transform: rotate(360deg);
+   }
 }
