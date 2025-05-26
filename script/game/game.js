@@ -1,5 +1,6 @@
 import {state} from "../state.js";
 import {loadWordList, loadDictionary, pickRandomWord} from "../utils/data.js";
+import {showOverlay, hideOverlay, overlay_content} from "../utils/style.js";
 import {addVirtualKeyboard } from "./keyboard.js";
 
 
@@ -54,6 +55,17 @@ restart_game_btn.addEventListener("click", ()=>{
     restart_game_btn.classList.add("rotate");
     restart_game_btn.addEventListener('animationend', ()=>{
         restart_game_btn.classList.remove("rotate");
-    })
+    }, {once: true});
     ResetGame();
+});
+
+let guide_btn = document.querySelector(".btn-guide")
+document.addEventListener("click",e=>{
+    if (!guide_btn.contains(e.target) && !overlay_content.contains(e.target)){
+        hideOverlay();
+    }
+})
+
+guide_btn.addEventListener("click", ()=>{
+    showOverlay()
 });

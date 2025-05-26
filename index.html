@@ -10,6 +10,7 @@
     
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/keyboard.css">
+    <link rel="stylesheet" href="styles/overlay.css">
     <link rel="stylesheet" href="styles/animations.css">
     
 </head>
@@ -98,6 +99,59 @@
                 key key key
         -->
     </section>
+<section class="overlay hidden">
+  <div class="overlay-content">
+    <div class="panel guide">
+      <h1>How to play Wordyl</h1>
+
+      <!-- Step 1: User enters a guess -->
+      <div class="guide-step">
+        <p>Type a 5-letter word:</p>
+        <div class="wordbox">
+          <div class="flip-box">
+            <div class="flip-inner">
+              <div class="flip-front">H</div>
+              <div class="flip-back right">H</div>
+            </div>
+          </div>
+          <div class="flip-box">
+            <div class="flip-inner">
+              <div class="flip-front">E</div>
+              <div class="flip-back misplaced">E</div>
+            </div>
+          </div>
+          <div class="flip-box">
+            <div class="flip-inner">
+              <div class="flip-front">L</div>
+              <div class="flip-back wrong">L</div>
+            </div>
+          </div>
+          <div class="flip-box">
+            <div class="flip-inner">
+              <div class="flip-front">L</div>
+              <div class="flip-back wrong">L</div>
+            </div>
+          </div>
+          <div class="flip-box">
+            <div class="flip-inner">
+              <div class="flip-front">O</div>
+              <div class="flip-back misplaced">O</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Explain colors -->
+      <div class="legend">
+        <div><span class="tile right">H</span>  Correct position</div>
+        <div><span class="tile misplaced">O</span>  Wrong position</div>
+        <div><span class="tile wrong">L</span>  Not in word</div>
+      </div>
+
+      <p class="final-note">You have 5 tries to guess the word. Good luck!</p>
+    </div>
+  </div>
+</section>
 
 </body>
 </html>
