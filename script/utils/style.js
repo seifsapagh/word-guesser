@@ -1,15 +1,3 @@
-export function styleLetters(letters, curLetter,current_letter){
-    letters.forEach(letter=>{
-        if(letter !== curLetter){
-            letter.classList.remove("curLetter");
-        }
-    });
-
-    if(current_letter >= 0)
-        curLetter.classList.add("curLetter");
-}
-
-
 export function triggerShakeAnimation(row){
     row.classList.add("shake");
     setTimeout(()=>{

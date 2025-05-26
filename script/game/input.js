@@ -1,7 +1,7 @@
 import { ALLOWED_INPUT, MAX_LETTERS, MAX_ROWS } from "../constants.js";
 import { checkExistance, checkResults } from "./validator.js";
 import { state } from "../state.js";
-import {triggerShakeAnimation, showMessage, styleLetters} from "../utils/style.js";
+import {triggerShakeAnimation, showMessage} from "../utils/style.js";
 import {pressVirtualKey} from "./keyboard.js";
 
 
@@ -79,8 +79,6 @@ export function handleKeyInput(e){
     else if(key !== "Enter"){
         insertLetter(letter_boxes,key)
     }
-    
-    styleLetters(letter_boxes, letter_boxes[state.current_letter]);
 
 }
 
