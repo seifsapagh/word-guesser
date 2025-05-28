@@ -3,6 +3,7 @@ import { checkExistance, checkResults } from "./validator.js";
 import { state } from "../state.js";
 import {triggerShakeAnimation, showMessage} from "../utils/style.js";
 import {pressVirtualKey} from "./keyboard.js";
+import { handleGameEnd } from "./game.js";
 
 
 function normalizeKey(key){
@@ -33,9 +34,9 @@ function handleSubmitGuess(letter_boxes, running_row){
         showMessage("Not in word list");
     }else{
         // if user entered the correct word, win
-        let win = checkResults(letter_boxes);
-        if(win){
-            state.game_on = false;
+        let isGuessCorrect  = checkResults(letter_boxes);
+        if( isGuessCorrect ){
+            handleGameEnd('win');
         }else{
             advanceRow(running_row)
         }
@@ -55,8 +56,7 @@ function advanceRow(running_row){
         return
 
     }else{
-        state.game_on = false;
-        setTimeout(()=>{alert(`the word was ${state.word}!`);}, 500); // show result after the 0.5 seconds it takes for flip animation to end.
+        handleGameEnd('lose')
     }
 }
 

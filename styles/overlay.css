@@ -1,10 +1,62 @@
+.msg-overlay{
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  z-index:9;
+
+  visibility: visible;
+  backdrop-filter: blur(0);
+  background-color: transparent;
+
+  transition: 
+    /* delay the invisbility till game restarts animation ends */ 
+    visibility 0s var(--restart-duration),
+    filter 0.3s ease,
+    background 0.3s ease ;
+  
+  
+  
+}
+.msg-overlay.background-dim{
+  backdrop-filter: blur(var(--bg-blur));
+  background-color: var(--bg-dim);
+}
+.msg-overlay.hidden{
+  visibility: hidden;
+}
+
+.message{
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%,0%);
+  background-color: white;
+  padding: 5px 15px;
+  border-radius: 5px;
+  color: black;
+  font-size: 1.5rem;
+  transition: all 0.5s ease-in-out;   
+  text-wrap: nowrap;
+  text-transform: capitalize;
+}
+
+.hidden .message{
+  visibility: hidden;
+  opacity: 0;
+  transform: translate(-50%,-70%);
+}
+
+
+
 section.overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 999;
   padding: 5% 10%;
   backdrop-filter: blur(5px);
   background-color: rgba(0, 0, 0, 0.5);
@@ -20,15 +72,15 @@ section.overlay {
 }
 
 .overlay-content{
-    border-radius: 15px;
-    padding: 20px;
-    border: 1px ridge #363636;
-    display: flex;
-    flex-direction: column;
-    font-size: 1rem;
-    background-color: var(--body-bg);
-    min-height: 70vh;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px ridge #363636;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  background-color: var(--body-bg);
+  min-height: 70vh;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
 }
 
 .panel.guide h1 {
@@ -83,13 +135,13 @@ section.overlay {
 }
 
 .flip-front {
-    background: #121213;
+  background: #121213;
   color: white;
 }
 
 .flip-back {
-    transform: rotateY(180deg);
-    color: white;
+  transform: rotateY(180deg);
+  color: white;
 }
 
 .legend {
@@ -120,14 +172,14 @@ section.overlay {
 }
 
 .overlay .right{
-    background-color: var(--color-right);
+  background-color: var(--color-right);
 }
 
 .overlay .misplaced{
-    background-color: var(--color-misplaced);
+  background-color: var(--color-misplaced);
 }
 
 .overlay .wrong{
-    background-color: var(--color-wrong);
+  background-color: var(--color-wrong);
     
 }

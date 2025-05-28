@@ -11,9 +11,13 @@
     --color-misplaced: rgb(223 158 0);
 
     --body-bg : #0d0d0d;
+    --bg-dim: rgba(0,0,0,0.2);
+    --bg-blur: 1.5px;
+
     --vgap: 10px;
     
-    --restart-duaration : 0.35s;
+    --restart-duration : 0.4s;
+
 }
 
 * {
@@ -47,9 +51,8 @@ body {
 
 .btn-new-game,.btn-guide{
     cursor: pointer;
-    text-transform: uppercase;
-    text-wrap: nowrap;
-    overflow: hidden;
+    /* Ensure i's above message overlay so restart button is clickable at game end */
+    z-index: 99; 
 }
 
 .btn-guide> svg, .btn-new-game > svg{
@@ -58,14 +61,13 @@ body {
 }
 .btn-new-game > svg{
     transform:scaleX(-1) rotate(350deg);
-    transition: rotate var(--restart-duaration) ease-in-out;
+    transition: rotate var(--restart-duration) ease-in-out;
 }
 
 .btn-new-game.rotate{
     transform:scaleX(-1) rotate(350deg);
-    animation: rotate var(--restart-duaration) forwards;
+    animation: rotate var(--restart-duration) forwards;
 }
-
 
 .title {
     grid-column:2;
@@ -95,26 +97,6 @@ body {
 .title>.misplaced{
     color: var(--color-misplaced);
     text-shadow: -4px 0px 0 #473406 , -4px 4px 0 #473406, 0px 4px 0 #473406;
-}
-
-.message{
-    position: absolute;
-    background-color: white;
-    padding: 5px 15px;
-    border-radius: 5px;
-    color: black;
-    top: 15%;
-    font-size: 1.5rem;
-    transition: all 0.5s ease-in-out;
-    z-index:99;
-}
-
-.message.hidden{
-    visibility: hidden;
-    opacity: 0;
-        visibility: 0s 1s, /* stays hidden after animation */
-        opacity 0.3s ease-in-out;  
-    transform: translateY(-20px);
 }
 
 .game {
@@ -180,11 +162,10 @@ body {
     animation: flip 0.5s ease-in-out forwards;
 }
 
-
 .shake {
   animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
-
-
-
+.shake-attention{
+    animation: shake 1s ease-in-out infinite;
+}

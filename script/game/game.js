@@ -1,6 +1,6 @@
 import {state} from "../state.js";
 import {loadWordList, loadDictionary, pickRandomWord} from "../utils/data.js";
-import {showOverlay, hideOverlay, overlay_content} from "../utils/style.js";
+import {showOverlay, hideOverlay, overlay_content, celebrate, showMessage, hideMessage, playAudio, failSound,stopAudio} from "../utils/style.js";
 import {addVirtualKeyboard } from "./keyboard.js";
 
 
@@ -32,6 +32,10 @@ export function ResetGame(){
         // no need to reset position feedback text since it's hidden unless the letter is correct
     }
 
+
+    hideMessage();
+    stopAudio();
+    // only start when a target word is picked
     if (state.word){
         state.game_on = true;
     }
@@ -42,20 +46,36 @@ export async function initGame(){
     // load dictionary
     state.dict = await loadDictionary();
     state.word_list = await loadWordList();
+
     addVirtualKeyboard();
-    // Reset
+
     ResetGame();
-    
+}
+
+export function handleGameEnd(result){
+    state.game_on = false;
+    if (result === 'win'){
+        showMessage(`Well Done`,0,true);
+        celebrate();
+    }else if (result === 'lose'){
+        playAudio(failSound);
+        showMessage(`word was ${state.word.toUpperCase()}`,0,true);
+    }
+    restart_game_btn.classList.add("shake-attention");
 }
 
 
 
 let restart_game_btn = document.querySelector(".btn-new-game");
 restart_game_btn.addEventListener("click", ()=>{
+    restart_game_btn.classList.remove("shake-attention");
+
     restart_game_btn.classList.add("rotate");
+
     restart_game_btn.addEventListener('animationend', ()=>{
         restart_game_btn.classList.remove("rotate");
     }, {once: true});
+
     ResetGame();
 });
 
