@@ -8,7 +8,6 @@ import { DEFAULT_WORD_LENGTH, DEFAULT_NUM_GUESSES } from "../constants.js";
 
 
 export function ResetGame(){
-
     // Reset game state
     state.current_row = 0;
     state.current_letter = 0;

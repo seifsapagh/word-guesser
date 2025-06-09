@@ -119,13 +119,13 @@ guide_btn.addEventListener("click", ()=>{
     showOverlay()
 });
 
-word_length_slider.addEventListener("input", e=>{
+word_length_slider.addEventListener("change", e=>{
     updateBoard(null , parseInt(e.target.value));
     // pick a new random word to fit the updated word length
     ResetGame()
 });
 
-max_guesses_slider.addEventListener("input", e=>{
+max_guesses_slider.addEventListener("change", e=>{
     updateBoard(parseInt(e.target.value), null);
     ResetGame();
 });
