@@ -6,8 +6,8 @@ RAW_WORDLIST_TXT = "words_alpha.txt" # source: https://github.com/dwyl/english-w
 WORDLE_WORDLIST_TXT = "./words.txt" # source: https://gist.github.com/scholtes/94f3c0303ba6a7768b47583aff36654d#file-wordle-la-txt
 BASE_WORDLIST_JSON = "../words.json" 
 
-ALLOWED_GUESSES_JSON = "../words.json" # words that can be guessed but not necessarily  the solution
-TARGET_WORDS_JSON = "../target_words.json"   # words that can be the solution
+ALLOWED_GUESSES_JSON = "test/words.json" # words that can be guessed but not necessarily  the solution
+TARGET_WORDS_JSON = "test/target_words.json"   # words that can be the solution
 
 def load_wordlist_json(path: str)-> any:
     try:
@@ -51,10 +51,11 @@ def extend_raw_wordlist(newWords: list, filePath: str):
 if __name__ == "__main__":
 
     if os.path.exists(RAW_WORDLIST_TXT):
-        start_preprocessing(RAW_WORDLIST_TXT, ALLOWED_GUESSES_JSON)
+        start_preprocessing(RAW_WORDLIST_TXT, ALLOWED_GUESSES_JSON, )
     else:
         print("Base Wordlist doesn't exist.")
         exit(1)
+
 
     base_wordlist = load_wordlist_json(BASE_WORDLIST_JSON)
     new_wordlist = load_wordlist_txt(WORDLE_WORDLIST_TXT)

@@ -48,10 +48,10 @@
   transform: translate(-50%,-70%);
 }
 
-
+/* Overlay Panels */
 
 section.overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -61,7 +61,11 @@ section.overlay {
   backdrop-filter: blur(5px);
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: auto;
-  transition: transform 0.4s ease, background 0.2s ease, filter 0.2s;
+  transition: transform 0.4s ease, background 0.2s ease, filter 0.2s, opacity 0.5s  ease-in-out;
+}
+
+section.overlay .overlay-content >.hidden{
+  display: none;
 }
 
 .overlay.hidden {
@@ -69,6 +73,7 @@ section.overlay {
   backdrop-filter: blur(0px);
   pointer-events: none;
   transform: translateY(-110%);
+  opacity: 0;
 }
 
 .overlay-content{
@@ -81,13 +86,16 @@ section.overlay {
   background-color: var(--body-bg);
   min-height: 70vh;
   box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  
 }
 
-.panel.guide h1 {
+.panel h1 {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 1rem;
 }
+
+/* Guide Panel Start */
 
 .guide-step {
   margin-bottom: 1.5rem;
@@ -152,6 +160,7 @@ section.overlay {
 
 .legend div {
   padding: 5px 10px;
+  text-align: center;
 }
 .tile {
   display: inline-block;
@@ -183,3 +192,37 @@ section.overlay {
   background-color: var(--color-wrong);
     
 }
+
+.panel{
+  padding: 1em 0 ;
+}
+
+
+/* Setting Panel */
+.setting{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 70%;
+  margin: auto;
+}
+.setting .slider_container{
+  display: flex;
+  align-items: center;
+}
+
+.setting .slider_container span{
+  width: 20px;
+  text-align: center;
+}
+
+@media only screen and (max-width:650px) {
+  .setting{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+
+

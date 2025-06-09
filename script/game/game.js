@@ -1,15 +1,19 @@
-import {state} from "../state.js";
+import {settings, state} from "../state.js";
 import {loadWordList, loadDictionary, pickRandomWord} from "../utils/data.js";
-import {showOverlay, hideOverlay, overlay_content, celebrate, showMessage, hideMessage, playAudio, failSound,stopAudio} from "../utils/style.js";
-import {addVirtualKeyboard } from "./keyboard.js";
+import {celebrate, showMessage, hideMessage, playAudio, failSound,stopAudio} from "../utils/style.js";
+import {addVirtualKeyboard} from "./keyboard.js";
+
+import {updateBoard} from './board.js';
+import { DEFAULT_WORD_LENGTH, DEFAULT_NUM_GUESSES } from "../constants.js";
 
 
 export function ResetGame(){
+
     // Reset game state
     state.current_row = 0;
-    state.current_letter = -1;
+    state.current_letter = 0;
     // update target word
-    state.word=  pickRandomWord(state.dict);
+    state.word=  pickRandomWord(state.dict[settings.word_length]);
     
     // Reset UI
 
@@ -21,7 +25,11 @@ export function ResetGame(){
             letter.className = "letter-box";
         });
     });
-    guess_rows[state.current_row].classList.add("running"); // highlight first guess row
+
+    // set input row and put it back into view
+    let running_row = guess_rows[state.current_row]
+    running_row.classList.add("running"); 
+    running_row.scrollIntoView({block: "end"});
 
     // Reset Keyboard UI
     let keyboard = document.querySelectorAll(".virtual-key");
@@ -31,7 +39,6 @@ export function ResetGame(){
         }); 
         // no need to reset position feedback text since it's hidden unless the letter is correct
     }
-
 
     hideMessage();
     stopAudio();
@@ -44,9 +51,10 @@ export function ResetGame(){
 
 export async function initGame(){
     // load dictionary
-    state.dict = await loadDictionary();
-    state.word_list = await loadWordList();
+    state.dict = await loadDictionary();        // to pick random word
+    state.word_list = await loadWordList();     // to validate user input against 
 
+    updateBoard(DEFAULT_NUM_GUESSES, DEFAULT_WORD_LENGTH);  
     addVirtualKeyboard();
 
     ResetGame();
@@ -61,31 +69,6 @@ export function handleGameEnd(result){
         playAudio(failSound);
         showMessage(`word was ${state.word.toUpperCase()}`,0,true);
     }
+    let restart_game_btn = document.querySelector(".btn-new-game")
     restart_game_btn.classList.add("shake-attention");
 }
-
-
-
-let restart_game_btn = document.querySelector(".btn-new-game");
-restart_game_btn.addEventListener("click", ()=>{
-    restart_game_btn.classList.remove("shake-attention");
-
-    restart_game_btn.classList.add("rotate");
-
-    restart_game_btn.addEventListener('animationend', ()=>{
-        restart_game_btn.classList.remove("rotate");
-    }, {once: true});
-
-    ResetGame();
-});
-
-let guide_btn = document.querySelector(".btn-guide")
-document.addEventListener("click",e=>{
-    if (!guide_btn.contains(e.target) && !overlay_content.contains(e.target)){
-        hideOverlay();
-    }
-})
-
-guide_btn.addEventListener("click", ()=>{
-    showOverlay()
-});

@@ -47,6 +47,9 @@ body {
     user-select: none;
     padding: var(--vgap) 0 ;
 
+    position: relative;
+    z-index: 99;
+    background-color: var(--body-bg);
 }
 
 .btn-new-game,.btn-guide{
@@ -107,6 +110,10 @@ body {
     margin: auto;
     user-select: none;
     padding: var(--vgap) 0;
+    max-height: 55vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
 }
 
 .guess-row {
@@ -167,5 +174,12 @@ body {
 }
 
 .shake-attention{
-    animation: shake 1s ease-in-out infinite;
+    animation: shake_attention 1.5s cubic-bezier(.3,0.8,0.4,-1.5) infinite
+}
+
+@media (max-width: 410px) {
+    .letter-box{
+        --box-dim : 40px;
+        font-size: 1em;
+    }
 }

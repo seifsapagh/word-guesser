@@ -1,3 +1,5 @@
+import { ResetGame } from "../game/game.js";
+import { updateBoard } from "../game/board.js";
 
 export function triggerShakeAnimation(row){
     row.classList.add("shake");
@@ -87,3 +89,43 @@ export function stopAudio(sound = failSound){
     sound.pause();
     sound.currentTime = 0;
 }
+
+let restart_game_btn = document.querySelector(".btn-new-game");
+let guide_btn = document.querySelector(".btn-guide")
+
+let word_length_slider = document.querySelector("#word-length-slider");
+let max_guesses_slider = document.querySelector("#max-guesses-slider"); 
+
+
+restart_game_btn.addEventListener("click", ()=>{
+    restart_game_btn.classList.remove("shake-attention");
+
+    restart_game_btn.classList.add("rotate");
+
+    restart_game_btn.addEventListener('animationend', ()=>{
+        restart_game_btn.classList.remove("rotate");
+    }, {once: true});
+
+    ResetGame();
+});
+
+document.addEventListener("click",e=>{
+    if (!guide_btn.contains(e.target) && !overlay_content.contains(e.target)){
+        hideOverlay();
+    }
+})
+
+guide_btn.addEventListener("click", ()=>{
+    showOverlay()
+});
+
+word_length_slider.addEventListener("input", e=>{
+    updateBoard(null , parseInt(e.target.value));
+    // pick a new random word to fit the updated word length
+    ResetGame()
+});
+
+max_guesses_slider.addEventListener("input", e=>{
+    updateBoard(parseInt(e.target.value), null);
+    ResetGame();
+});

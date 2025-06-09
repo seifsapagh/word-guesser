@@ -1,6 +1,6 @@
 import{DEFAULT_WORD_LENGTH, TARGET_WORDS_PATH, ALLOWED_WORDS_PATH} from "../constants.js";
 
-export async function loadDictionary(word_length= DEFAULT_WORD_LENGTH) {
+export async function loadDictionary() {
     const response = await fetch(TARGET_WORDS_PATH);
     const dictionaryObj = await response.json();
     return dictionaryObj;

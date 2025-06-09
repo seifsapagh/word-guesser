@@ -38,7 +38,7 @@ def start_preprocessing(rawFilePath: str, exportPath, exportLengths: bool = Fals
         for line in file:
             word = line.strip()
             # Add words of lengths larger than 3 
-            if word and len(word) == WORD_LENGTH :
+            if word and len(word) >= 3  and  len(word) <= 7:
                 words_set.add(word)
                 if exportLengths:
                     words_by_length[len(word)].append(word)
